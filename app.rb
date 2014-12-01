@@ -1,4 +1,5 @@
 require 'sinatra'
+require "sinatra/json"
 require 'sinatra/activerecord'
 require './environments'
 
@@ -28,4 +29,8 @@ end
 class ConferenceRoom < ActiveRecord::Base
   has_many :meetings
   validates :name, presence: true, uniqueness: true
+end
+
+get '/' do
+  json message: "Welcome To Meeting Room App"
 end
