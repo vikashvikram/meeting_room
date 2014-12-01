@@ -29,6 +29,11 @@ ActiveRecord::Schema.define(version: 20141201055154) do
     t.datetime "updated_at"
   end
 
+  create_table "employees_meetings", id: false, force: true do |t|
+    t.integer "meeting_id"
+    t.integer "employee_id"
+  end
+
   create_table "employees_teams", id: false, force: true do |t|
     t.integer "team_id"
     t.integer "employee_id"
@@ -43,11 +48,6 @@ ActiveRecord::Schema.define(version: 20141201055154) do
   end
 
   add_index "meetings", ["conference_room_id"], name: "index_meetings_on_conference_room_id", using: :btree
-
-  create_table "meetings_participants", id: false, force: true do |t|
-    t.integer "meeting_id"
-    t.integer "participant_id"
-  end
 
   create_table "teams", force: true do |t|
     t.string   "name",       null: false
