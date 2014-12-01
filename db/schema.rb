@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 20141201055154) do
 
   create_table "meetings", force: true do |t|
     t.integer  "conference_room_id"
+    t.integer  "booked_by"
     t.datetime "start_time",         null: false
     t.datetime "end_time",           null: false
     t.datetime "created_at"

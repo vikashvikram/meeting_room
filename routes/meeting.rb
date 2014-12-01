@@ -1,16 +1,16 @@
 class MyApp < Sinatra::Application
 	get '/meetings' do
-	  @meetings = Team.all
+	  @meetings = Meeting.all
 	  json @meetings.to_json
 	end
 
 	get '/meetings/:id' do
-	  @meeting = Team.find(params[:id])
+	  @meeting = Meeting.find(params[:id])
 	  json @meeting.to_json
 	end
 
 	post '/meetings' do
-	  @meeting = Team.new(params[:meeting])
+	  @meeting = Meeting.new(params[:meeting])
 	  if @meeting.save
 	    json message: "Successfully created meeting with ID: #{@meeting.id}"
 	  else
@@ -19,7 +19,7 @@ class MyApp < Sinatra::Application
 	end
 
 	delete '/meetings/:id' do
-	  @meeting = Team.find(params[:id])
+	  @meeting = Meeting.find(params[:id])
 	  if @meeting.destroy
 	    json message: "Successfully deleted"
 	  else
@@ -28,7 +28,7 @@ class MyApp < Sinatra::Application
 	end
 
 	put '/meetings/:id' do
-	  @meeting = Team.find(params[:id])
+	  @meeting = Meeting.find(params[:id])
 	  if @meeting.update(params[:meeting])
 	    json message: "Successfully updated meeting with ID: #{@meeting.id}"
 	  else
@@ -37,7 +37,7 @@ class MyApp < Sinatra::Application
 	end
 
 	patch'/meetings/:id' do
-	  @meeting = Team.find(params[:id])
+	  @meeting = Meeting.find(params[:id])
 	  if @meeting.update_attributes(params[:meeting])
 	    json message: "Successfully patched meeting with ID: #{@meeting.id}"
 	  else
