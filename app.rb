@@ -16,12 +16,12 @@ class MyApp < Sinatra::Application
      :encoding => 'utf8'
    )
   end
+  get '/' do
+    json message: "Welcome To Meeting Room App"
+  end
 end
 
 require_relative 'models/init'
 require_relative 'routes/init'
 
-get '/' do
-  json message: "Welcome To Meeting Room App"
-end
 
