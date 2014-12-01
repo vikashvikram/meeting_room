@@ -9,10 +9,15 @@ class MyApp < Sinatra::Application
 	  json @team.to_json
 	end
 
+	get '/team/:id/members' do
+	  @employees = Team.find(params[:id]).employees
+	  json @employees.to_json
+	end
+
 	post '/teams' do
 	  @team = Team.new(params[:team])
 	  if @team.save
-	    json message: "Successfully created team with ID: #{@team.id}"
+	    json message: "Successfully created team with ID: #{@team.id}", team_id: @team.id
 	  else
 	    json message: "Unsuccessful team creation", errors: @team.errors.full_messages
 	  end
