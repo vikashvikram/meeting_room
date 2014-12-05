@@ -6,6 +6,12 @@ class Employee < ActiveRecord::Base
   validates :email, uniqueness: true, presence: true
   validates :sap_id, uniqueness: true, presence: true
   validates :name, presence: true
+  def self.get_participants(participants)
+    @teams = Team.where('name in (?)', participants)
+    @participants = @teams.map do |x| x.employees.map &:id end
+    @participants << Employee.where('name in (?)', participants).map(&:id)
+    @participants.flatten!.uniq!
+  end
 end
 
 class Team < ActiveRecord::Base

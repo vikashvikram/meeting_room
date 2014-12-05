@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 20141201055154) do
     t.integer  "booked_by"
     t.datetime "start_time",         null: false
     t.datetime "end_time",           null: false
+    t.string   "agenda"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

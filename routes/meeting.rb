@@ -10,8 +10,10 @@ class MyApp < Sinatra::Application
 	end
 
 	post '/meetings' do
-	  @meeting = Meeting.new(params[:meeting])
+	  @participants = Employee.get_participants(params[:meeting][:participants].split(',').map(&:strip))
+	  @meeting = Meeting.new(params[:meeting].except("participants"))
 	  if @meeting.save
+            @meeting.employees << Employee.find(@participants)
 	    json message: "Successfully created meeting with ID: #{@meeting.id}"
 	  else
 	    json message: "Unsuccessful meeting creation", errors: @meeting.errors.full_messages

@@ -5,6 +5,7 @@ class CreateMeetings < ActiveRecord::Migration
       t.integer :booked_by
       t.datetime :start_time, null:false
       t.datetime :end_time, null:false
+      t.string :agenda
     
       t.timestamps
     end
