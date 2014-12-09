@@ -49,8 +49,10 @@ end
 class ConferenceRoom < ActiveRecord::Base
   has_many :meetings
   validates :name, presence: true, uniqueness: true
+  scope :booked, ->(start_time, end_time) {joins(:meetings).where("start_time <= ? and end_time >= ? ", start_time, end_time)}
 
-  def self.available(start_time=nil, end_time=nil)
-    all.select{|conf_room| conf_room.meetings.overlaps(start_time, end_time, conf_room.id).blank?}
+  def self.available(start_time, end_time)
+    @booked_rooms = booked(start_time, end_time).pluck(:id)
+    @booked_rooms.blank? ? ConferenceRoom.all : ConferenceRoom.where('id not in (?)', @booked_rooms)
   end
 end

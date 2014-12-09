@@ -16,4 +16,8 @@ class MyApp < Sinatra::Application
 		@result = %x{ python /home/vk/Documents/projects/Formatting_Code/main.py \"#{@message}\"}
 		json @result 
 	end
+	get '/available_rooms' do
+		@rooms = ConferenceRoom.available(params[:start_time], params[:end_time])
+		json @rooms.to_json
+	end
 end
