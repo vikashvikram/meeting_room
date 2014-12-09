@@ -49,4 +49,8 @@ end
 class ConferenceRoom < ActiveRecord::Base
   has_many :meetings
   validates :name, presence: true, uniqueness: true
+
+  def self.available(start_time=nil, end_time=nil)
+    all.select{|conf_room| conf_room.meetings.overlaps(start_time, end_time, conf_room.id).blank?}
+  end
 end

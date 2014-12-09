@@ -1,6 +1,6 @@
 class MyApp < Sinatra::Application
 	get '/conference_rooms' do
-	  @conference_rooms = ConferenceRoom.all
+	  @conference_rooms = ConferenceRoom.available(params[:start_time], params[:end_time])
 	  json @conference_rooms.to_json
 	end
 
