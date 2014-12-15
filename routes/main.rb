@@ -1,3 +1,4 @@
+require 'json'
 class MyApp < Sinatra::Application
 	post '/assign_team' do
 		@employee = Employee.find(params[:employee_id])
@@ -13,11 +14,16 @@ class MyApp < Sinatra::Application
 	end
 	post '/parse' do
 		@message = params[:message]
-		@result = %x{ python /home/vk/Documents/projects/Formatting_Code/main.py \"#{@message}\"}
-		json @result 
+		@result = %x{ python /home/vk/Documents/projects/Formatting_Code/main.py '#{@message}'}
+		data = JSON.parse(@result)
+		cr =  ConferenceRoom.find_by(name: data["conf_room"]).id
+		bb =  Employee.find_by(name: data["booked_by"]).id
+		data = data.each { |k, v| data["conf_room"] = cr }
+		data = data.each { |k, v| data["booked_by"] = bb }	
+		json [data] 
 	end
 	get '/available_rooms' do
 		@rooms = ConferenceRoom.available(params[:start_time], params[:end_time])
-		json @rooms.to_json
+		json @rooms
 	end
 end

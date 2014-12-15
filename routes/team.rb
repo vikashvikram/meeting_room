@@ -1,17 +1,17 @@
 class MyApp < Sinatra::Application
 	get '/teams' do
 	  @teams = Team.all
-	  json @teams.to_json
+	  json @teams
 	end
 
 	get '/teams/:id' do
 	  @team = Team.find(params[:id])
-	  json @team.to_json
+	  json @team
 	end
 
 	get '/team/:id/members' do
 	  @employees = Team.find(params[:id]).employees
-	  json @employees.to_json
+	  json @employees
 	end
 
 	post '/teams' do

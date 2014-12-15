@@ -1,12 +1,12 @@
 class MyApp < Sinatra::Application
 	get '/conference_rooms' do
 	  @conference_rooms = ConferenceRoom.all
-	  json @conference_rooms.to_json
+	  json @conference_rooms
 	end
 
 	get '/conference_rooms/:id' do
 	  @conference_room = ConferenceRoom.find(params[:id])
-	  json @conference_room.to_json
+	  json @conference_room
 	end
 
 	post '/conference_rooms' do

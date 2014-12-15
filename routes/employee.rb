@@ -1,12 +1,12 @@
 class MyApp < Sinatra::Application
 	get '/employees' do
 	  @employees = Employee.all
-	  json @employees.to_json
+	  json @employees
 	end
 
 	get '/employees/:id' do
 	  @employee = Employee.find(params[:id])
-	  json @employee.to_json
+	  json @employee
 	end
 
 	post '/employees' do

@@ -1,12 +1,12 @@
 class MyApp < Sinatra::Application
 	get '/meetings' do
 	  @meetings = Meeting.all
-	  json @meetings.to_json
+	  json @meetings
 	end
 
 	get '/meetings/:id' do
 	  @meeting = Meeting.find(params[:id])
-	  json @meeting.to_json
+	  json @meeting
 	end
 
 	post '/meetings' do
@@ -14,18 +14,18 @@ class MyApp < Sinatra::Application
 	  @meeting = Meeting.new(params[:meeting].except("participants"))
 	  if @meeting.save
             @meeting.employees << Employee.find(@participants)
-	    json message: "Successfully created meeting with ID: #{@meeting.id}"
+	    json message: "Successfully created meeting with ID: #{@meeting.id}", result: "Success", meeting_id: @meeting.id
 	  else
-	    json message: "Unsuccessful meeting creation", errors: @meeting.errors.full_messages
+	    json message: "Unsuccessful meeting creation", errors: @meeting.errors.full_messages, result: "Fail"
 	  end
 	end
 
 	delete '/meetings/:id' do
 	  @meeting = Meeting.find(params[:id])
 	  if @meeting.destroy
-	    json message: "Successfully deleted"
+	    json message: "Successfully deleted", result: "Success"
 	  else
-	    json message: "Unsuccessful deletion", errors: @meeting.errors.full_messages
+	    json message: "Unsuccessful deletion", errors: @meeting.errors.full_messages, result: "Fail"
 	  end
 	end
 
