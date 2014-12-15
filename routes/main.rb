@@ -16,10 +16,12 @@ class MyApp < Sinatra::Application
 		@message = params[:message]
 		@result = %x{ python /home/vk/Documents/projects/Formatting_Code/main.py '#{@message}'}
 		data = JSON.parse(@result)
-		cr =  ConferenceRoom.find_by(name: data["conf_room"]).id
-		bb =  Employee.find_by(name: data["booked_by"]).id
-		data = data.each { |k, v| data["conf_room"] = cr }
-		data = data.each { |k, v| data["booked_by"] = bb }	
+                unless data["result"] == "Fail"
+			cr =  ConferenceRoom.find_by(name: data["conf_room"]).id
+			bb =  Employee.find_by(name: data["booked_by"]).id
+			data = data.each { |k, v| data["conf_room"] = cr }
+			data = data.each { |k, v| data["booked_by"] = bb }
+		end	
 		json [data] 
 	end
 	get '/available_rooms' do
