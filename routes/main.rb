@@ -16,6 +16,8 @@ class MyApp < Sinatra::Application
 		@message = params[:message]
 		@result = %x{ python /home/vk/Documents/projects/Formatting_Code/main.py '#{@message}'}
 		data = JSON.parse(@result)
+		logger.info "message: #{@message}"
+		logger.info "result: #{@result}"
                 unless data["result"] == "Fail"
 			cr =  ConferenceRoom.find_by(name: data["conf_room"]).id
 			bb =  Employee.find_by(name: data["booked_by"]).id

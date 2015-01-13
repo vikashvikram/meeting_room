@@ -7,10 +7,24 @@ class Employee < ActiveRecord::Base
   validates :sap_id, uniqueness: true, presence: true
   validates :name, presence: true
   def self.get_participants(participants)
-    @teams = Team.where('name in (?)', participants)
-    @participants = @teams.map do |x| x.employees.map &:id end
-    @participants << Employee.where('name in (?)', participants).map(&:id)
-    @participants.flatten!.uniq!
+    unless participants.blank?
+      @teams = Team.get_p(participants)
+      @participants = @teams.map do |x| x.employees.map &:id end
+      @participants << Employee.get_p(participants).map(&:id)
+      @participants.flatten!.uniq
+    else
+      []
+    end
+  rescue
+    return []
+  end
+
+  def self.get_p(participants)
+    e = arel_table[:name]
+    p_arel = participants.collect{|p| e.matches("%#{p}%")}
+    query = p_arel.shift
+    p_arel.each do |x| query = query.or(x) end
+    where(query)
   end
 end
 
@@ -18,6 +32,13 @@ class Team < ActiveRecord::Base
   has_and_belongs_to_many :employees
   
   validates :name, uniqueness: true, presence: true
+  def self.get_p(participants)
+    e = arel_table[:name]
+    p_arel = participants.collect{|p| e.matches("%#{p}%")}
+    query = p_arel.shift
+    p_arel.each do |x| query = query.or(x) end
+    where(query)
+  end
 end
 
 class Meeting < ActiveRecord::Base
