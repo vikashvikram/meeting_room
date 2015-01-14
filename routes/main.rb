@@ -19,7 +19,7 @@ class MyApp < Sinatra::Application
 		logger.info "message: #{@message}"
 		logger.info "result: #{@result}"
                 unless data["result"] == "Fail"
-			cr =  ConferenceRoom.find_by(name: data["conf_room"]).id
+			cr =  ConferenceRoom.find_by(name: data["conf_room"]).try(:id)
 			bb =  Employee.find_by(name: data["booked_by"]).id
 			data = data.each { |k, v| data["conf_room"] = cr }
 			data = data.each { |k, v| data["booked_by"] = bb }
