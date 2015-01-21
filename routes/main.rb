@@ -30,4 +30,13 @@ class MyApp < Sinatra::Application
 		@rooms = ConferenceRoom.available(params[:start_time], params[:end_time])
 		json @rooms
 	end
+	get '/new_available_rooms' do
+		@rooms = ConferenceRoom.available_rooms(params[:start_time], params[:end_time])
+		json @rooms
+	end
+	get '/active_bookings' do
+		employee = Employee.find(params[:host_id])
+		@meetings = employee.active_bookings
+		json @meetings
+	end
 end
